@@ -81,7 +81,7 @@ class Ball:
 class Game:
     """
     Основной класс игры.
-    По ЛКМ создаётся новый шар, по ПКМ удаляется шар.
+    По ЛКМ создаётся новый шар, по движении мышки с ПКМ удаляются шары.
     Шар изначально летит в случайном направлении.
     После 4 столкновений с границами скорость шара увеличивается. Скорость растёт до предельной скорости
     """
@@ -123,6 +123,8 @@ class Game:
             raise GameOverException()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             self._handle_mouse_click(event)
+        elif event.type == pygame.MOUSEMOTION:
+            self._handle_mouse_motion(event)
 
     def _handle_mouse_click(self, event: pygame.event.Event) -> None:
         """Обработка нажатия мыши"""
@@ -133,8 +135,14 @@ class Game:
             new_ball = self._create_ball_on_point(click_point)
             self._balls.append(new_ball)
             new_ball.draw_on_surface(self._surface)
-        elif event.button == MOUSE_RIGHT:
-            self._remove_balls_by_point(click_point)
+
+    def _handle_mouse_motion(self, event: pygame.event.Event) -> None:
+        """Обработка движения мыши"""
+        mouse_point = Point.build_from_tuple(event.pos)
+
+        is_right_press = bool(event.buttons[2])
+        if is_right_press:
+            self._remove_balls_by_point(mouse_point)
 
     def _create_ball_on_point(self, point: Point) -> Ball:
         """Создать шар в точке"""
