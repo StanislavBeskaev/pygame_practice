@@ -94,6 +94,7 @@ class Game:
         self._color = color
         self._surface = pygame.display.set_mode((self._width, self._height))
         self._balls = []
+        pygame.display.set_caption("Летающие шары")
 
     def play(self) -> None:
         """Запуск игры"""
