@@ -1,3 +1,6 @@
+import random
+
+
 class Speed:
     """Скорость передвижения по плоскости"""
     MAX_PIXEL_PER_SECOND = 600
@@ -12,8 +15,17 @@ class Speed:
                f" _y_pixels_per_second={self._y_pixels_per_second}, fps={self._fps}"
         return data
 
-    def increase(self, percent: int) -> bool:
-        if self._can_increase():
+    @classmethod
+    def create_random_speed(cls, max_x: int, max_y: int, fps) -> "Speed":
+        """Создать случайную скорость в заданных пределах"""
+        return Speed(
+            x_pixels_per_second=random.randint(-max_x, max_x),
+            y_pixels_per_second=random.randint(-max_y, max_y),
+            fps=fps
+        )
+
+    def increase(self, percent: int, limit: int = MAX_PIXEL_PER_SECOND) -> bool:
+        if self._can_increase(limit=limit):
             coefficient = (100 + percent) / 100
             self._x_pixels_per_second *= coefficient
             self._y_pixels_per_second *= coefficient
@@ -40,9 +52,9 @@ class Speed:
     def _get_frame_delta(self, speed_component: float) -> float:
         return speed_component / self._fps
 
-    def _can_increase(self) -> bool:
+    def _can_increase(self, limit: int = MAX_PIXEL_PER_SECOND) -> bool:
         """Можно ли увеличить скорость: не достигнут ли предел по скорости"""
         return (
-                - self.MAX_PIXEL_PER_SECOND < self._x_pixels_per_second < self.MAX_PIXEL_PER_SECOND
-                and - self.MAX_PIXEL_PER_SECOND < self._y_pixels_per_second < self.MAX_PIXEL_PER_SECOND
+                - limit < self._x_pixels_per_second < limit
+                and - limit < self._y_pixels_per_second < limit
         )

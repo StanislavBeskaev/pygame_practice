@@ -12,6 +12,7 @@ WIN_WIDTH = 1200
 WIN_HEIGHT = 700
 MOUSE_LEFT = 1
 MOUSE_RIGHT = 3
+MAX_BALL_DIRECTION_SPEED = 800
 LOG_EVENTS = False
 
 
@@ -22,8 +23,8 @@ class GameOverException(Exception):
 
 class Ball:
     """Игровой шар"""
-    def __init__(self, start: Point, color: colors.Color, speed: Speed, radius: int):
-        self._center = start
+    def __init__(self, start: Point, color: colors.Color, speed: Speed, radius: int, surface: pygame.Surface):
+        self._center = Point.push_back_point_from_surface_borders(point=start, surface=surface, distance=radius)
         self._color = color
         self._speed = speed
         self._radius = radius
@@ -47,7 +48,7 @@ class Ball:
         if self._collisions_count >= 4:
             percent = random.randint(30, 100)
             self._collisions_count = 0
-            if self._speed.increase(percent=percent):
+            if self._speed.increase(percent=percent, limit=MAX_BALL_DIRECTION_SPEED):
                 logger.info(f"Увеличена скорость на {percent}% для мяча: {self}")
 
         self._center.x += self._speed.get_x_frame_delta()
@@ -138,10 +139,10 @@ class Game:
         """Создать шар в точке"""
         logger.info(f"Создаём шар в точке: {point}")
         available_colors = (colors.RED, colors.GREEN, colors.YELLOW, colors.BLUE, colors.BLACK, colors.PINK)
-        ball_speed = Speed(
-            x_pixels_per_second=random.randint(-250, 250), y_pixels_per_second=random.randint(-200, 200), fps=self._fps
+        ball_speed = Speed.create_random_speed(max_x=250, max_y=200, fps=self._fps)
+        ball = Ball(
+            start=point, color=random.choice(available_colors), speed=ball_speed, radius=50, surface=self._surface
         )
-        ball = Ball(start=point, color=random.choice(available_colors), speed=ball_speed, radius=50)
         logger.info(f"Создан новый шар: {ball}")
         return ball
 

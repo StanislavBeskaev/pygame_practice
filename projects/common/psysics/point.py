@@ -1,5 +1,8 @@
+import copy
 from dataclasses import dataclass
 import math
+
+import pygame
 
 
 @dataclass
@@ -13,6 +16,28 @@ class Point:
     def build_from_tuple(cls, coordinates: tuple[int, int]) -> "Point":
         """Построение точки из кортежа координат"""
         return cls(*coordinates)
+
+    @classmethod
+    def push_back_point_from_surface_borders(cls, point: "Point", surface: pygame.Surface, distance: int) -> "Point":
+        """Отодвинуть точку от границ поверхности на указанное расстояние. Возвращает новую точку"""
+        result_point = copy.deepcopy(point)
+        width = surface.get_width()
+        height = surface.get_height()
+
+        # Изменение на 1, что бы был запас до границ
+        if result_point.is_near_top_border(distance=distance):
+            result_point.y = distance + 1
+
+        if result_point.is_near_right_border(distance=distance, window_width=width):
+            result_point.x = width - distance - 1
+
+        if result_point.is_near_bottom_border(distance=distance, window_height=height):
+            result_point.y = height - distance - 1
+
+        if result_point.is_near_left_border(distance=distance):
+            result_point.x = distance + 1
+
+        return result_point
 
     def calculate_distance_to_point(self, other: "Point") -> float:
         """Посчитать расстояние до точки"""
