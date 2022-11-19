@@ -136,6 +136,10 @@ class Game:
             self._balls.append(new_ball)
             new_ball.draw_on_surface(self._surface)
 
+        if event.button == MOUSE_RIGHT:
+            logger.debug(f"Правая кнопка, {event.pos}")
+            self._remove_balls_by_point(point=Point.build_from_tuple(event.pos))
+
     def _handle_mouse_motion(self, event: pygame.event.Event) -> None:
         """Обработка движения мыши"""
         mouse_point = Point.build_from_tuple(event.pos)
