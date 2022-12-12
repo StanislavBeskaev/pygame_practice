@@ -47,7 +47,7 @@ def main():
         pygame.draw.aalines(surface, WHITE, True, [[450, 110], [480, 150], [390, 190], [330, 130]])
 
         pygame.draw.circle(surface, YELLOW, (400, 300), 50)
-        pygame.draw.circle(surface, PINK, (500, 300), 50, 10)
+        pygame.draw.circle(surface, PINK, (500, 300), 50, 45, draw_top_right=True)
         pygame.draw.ellipse(surface, GREEN, (10, 350, 280, 100))
 
         pygame.draw.arc(surface, WHITE, (510, 50, 280, 100), 0, math.pi)

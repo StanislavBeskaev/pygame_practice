@@ -10,7 +10,7 @@ FPS = 60
 def main():
     """Рисование двигающегося квадрата слева направо и сверху вниз, как доходит до края, то возвращается"""
     clock = pygame.time.Clock()
-    sc = pygame.display.set_mode((300, 300))
+    sc = pygame.display.set_mode((300, 250))
     sc.fill(color=colors.LIGHT_GREEN)
 
     surf2 = pygame.Surface((100, 100))

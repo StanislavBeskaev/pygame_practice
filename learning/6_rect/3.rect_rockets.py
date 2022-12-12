@@ -49,7 +49,7 @@ def main():
 
     pygame.display.update()
 
-    active_left = False
+    active_left = True
     active_right = False
 
     while True:

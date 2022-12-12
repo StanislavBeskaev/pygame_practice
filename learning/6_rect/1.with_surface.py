@@ -13,7 +13,7 @@ def main():
     surf2 = pg.Surface((100, 100))
     surf2.fill(colors.WHITE)
     rect = pg.Rect((70, 20, 0, 0))
-    surf1.blit(surf2, rect)
+    surf1.blit(surf2, rect)  # blit возьмёт из rect координату верхнего левого угла для размещения
 
     sc.blit(surf1, rect)
     pg.display.update()
