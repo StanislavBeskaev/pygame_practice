@@ -1,6 +1,6 @@
 import copy
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 
 import pygame
 
@@ -43,7 +43,7 @@ class Point:
         """Посчитать расстояние до точки"""
         x_delta = self.x - other.x
         y_delta = self.y - other.y
-        distance = math.sqrt(x_delta ** 2 + y_delta ** 2)
+        distance = math.sqrt(x_delta**2 + y_delta**2)
         return distance
 
     def to_pygame_point(self) -> tuple[int, int]:

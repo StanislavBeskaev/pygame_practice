@@ -1,5 +1,6 @@
-import pygame as pg
 import sys
+
+import pygame as pg
 
 WHITE = (255, 255, 255)
 RED = (225, 0, 50)

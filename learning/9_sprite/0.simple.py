@@ -2,8 +2,8 @@ import os
 import sys
 from random import randint
 
-from loguru import logger
 import pygame as pg
+from loguru import logger
 
 WIDTH = 400
 HEIGHT = 400
@@ -31,7 +31,7 @@ def main():
             if event.type == pg.QUIT:
                 sys.exit()
             elif event.type == pg.MOUSEBUTTONDOWN:
-                logger.debug(f"Нажата мышь!")
+                logger.debug("Нажата мышь!")
                 coordinates = event.pos
                 if car.is_point_inside(*coordinates):
                     logger.error("Попали по машине")

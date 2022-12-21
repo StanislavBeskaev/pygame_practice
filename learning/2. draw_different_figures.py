@@ -1,8 +1,8 @@
 import math
 import os
 
-from loguru import logger
 import pygame
+from loguru import logger
 
 FPS = os.environ.get("FPS", 30)
 

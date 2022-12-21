@@ -1,5 +1,5 @@
-from abc import ABC
 import random
+from abc import ABC
 
 import pygame
 
@@ -11,19 +11,20 @@ WIN_CENTER = (WIN_WIDTH // 2, WIN_HEIGHT // 2)
 CIRCLE_RADIUS = 250
 FPS = 5
 AVAILABLE_COLORS = (
-        colors.BLACK,
-        colors.PINK,
-        colors.RED,
-        colors.YELLOW,
-        colors.GREEN,
-        colors.LIGHT_GREEN,
-        colors.LIGHT_BLUE,
-        colors.GRAY
-    )
+    colors.BLACK,
+    colors.PINK,
+    colors.RED,
+    colors.YELLOW,
+    colors.GREEN,
+    colors.LIGHT_GREEN,
+    colors.LIGHT_BLUE,
+    colors.GRAY,
+)
 
 
 class CircleQuarter(ABC):
     """Четверть круга"""
+
     common_change_color_key = pygame.K_0
     quarter_change_color_key = None
     draw_attrs = {}

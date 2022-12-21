@@ -1,7 +1,7 @@
 import random
 
-from loguru import logger
 import pygame
+from loguru import logger
 
 from projects.common import colors
 from projects.common.psysics.point import Point
@@ -18,11 +18,13 @@ LOG_EVENTS = False
 
 class GameOverException(Exception):
     """Исключение конца игры"""
+
     pass
 
 
 class Ball:
     """Игровой шар"""
+
     def __init__(self, start: Point, color: colors.Color, speed: Speed, radius: int, surface: pygame.Surface):
         self._center = Point.push_back_point_from_surface_borders(point=start, surface=surface, distance=radius)
         self._color = color
@@ -162,11 +164,7 @@ class Game:
     def _remove_balls_by_point(self, point: Point) -> None:
         """Убрать шары в которые попала точка"""
         logger.debug(f"Убираем шары содержащие точку {point = }")
-        self._balls = [
-            ball
-            for ball in self._balls
-            if ball not in self._get_ball_containing_point(point)
-        ]
+        self._balls = [ball for ball in self._balls if ball not in self._get_ball_containing_point(point)]
 
     def _get_ball_containing_point(self, point: Point) -> list[Ball]:
         """Получение шаров которые содержат точку"""

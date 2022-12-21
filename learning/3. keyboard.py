@@ -1,5 +1,6 @@
-import pygame
 import sys
+
+import pygame
 
 FPS = 60
 W = 800  # ширина экрана

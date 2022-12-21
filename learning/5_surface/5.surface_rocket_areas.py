@@ -117,7 +117,7 @@ def main():
                 color=colors.WHITE,
                 rocket_color=colors.BLUE,
                 rocket_speed=Speed(pixels_per_second=120),
-            )
+            ),
         ]
     )
 

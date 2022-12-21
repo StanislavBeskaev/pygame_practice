@@ -7,6 +7,7 @@ from projects.common.psysics.point import Point
 @dataclass
 class Vector:
     """Вектор на плоскости"""
+
     x: float
     y: float
 

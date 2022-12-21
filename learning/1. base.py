@@ -1,10 +1,9 @@
-from datetime import datetime
 import os
+from datetime import datetime
 
-from loguru import logger
 import pygame
 import pytz
-
+from loguru import logger
 
 FPS = os.environ.get("FPS", 30)
 

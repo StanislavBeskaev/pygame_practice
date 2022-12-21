@@ -3,6 +3,7 @@ import random
 
 class Speed:
     """Скорость передвижения по плоскости"""
+
     MAX_PIXEL_PER_SECOND = 600
 
     def __init__(self, x_pixels_per_second: float, y_pixels_per_second: float, fps: int):
@@ -11,8 +12,10 @@ class Speed:
         self._fps = fps
 
     def __str__(self):
-        data = f"x_pixels_per_second = {self._x_pixels_per_second}," \
-               f" _y_pixels_per_second={self._y_pixels_per_second}, fps={self._fps}"
+        data = (
+            f"x_pixels_per_second = {self._x_pixels_per_second},"
+            f" _y_pixels_per_second={self._y_pixels_per_second}, fps={self._fps}"
+        )
         return data
 
     @classmethod
@@ -21,7 +24,7 @@ class Speed:
         return Speed(
             x_pixels_per_second=random.randint(-max_x, max_x),
             y_pixels_per_second=random.randint(-max_y, max_y),
-            fps=fps
+            fps=fps,
         )
 
     def increase(self, percent: int, limit: int = MAX_PIXEL_PER_SECOND) -> bool:
@@ -43,18 +46,15 @@ class Speed:
 
     def reflect_by_x(self) -> None:
         """Отразить скорость по оси x"""
-        self._x_pixels_per_second = - self._x_pixels_per_second
+        self._x_pixels_per_second = -self._x_pixels_per_second
 
     def reflect_by_y(self) -> None:
         """Отразить скорость по оси y"""
-        self._y_pixels_per_second = - self._y_pixels_per_second
+        self._y_pixels_per_second = -self._y_pixels_per_second
 
     def _get_frame_delta(self, speed_component: float) -> float:
         return speed_component / self._fps
 
     def _can_increase(self, limit: int = MAX_PIXEL_PER_SECOND) -> bool:
         """Можно ли увеличить скорость: не достигнут ли предел по скорости"""
-        return (
-                - limit < self._x_pixels_per_second < limit
-                and - limit < self._y_pixels_per_second < limit
-        )
+        return -limit < self._x_pixels_per_second < limit and -limit < self._y_pixels_per_second < limit

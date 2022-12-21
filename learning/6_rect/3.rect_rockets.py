@@ -19,19 +19,14 @@ class Rocket:
         self.y = surface.get_height()
 
     def fly(self):
-        pygame.draw.rect(
-            self.surf, self.color, (
-                self.x, self.y,
-                Rocket.width_rocket,
-                Rocket.height_rocket))
+        pygame.draw.rect(self.surf, self.color, (self.x, self.y, Rocket.width_rocket, Rocket.height_rocket))
         self.y -= 3
         if self.y < -Rocket.height_rocket:
             self.y = WIN_HEIGHT
 
 
 def main():
-    sc = pygame.display.set_mode(
-        (WIN_WIDTH, WIN_HEIGHT))
+    sc = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
     rect_left = pygame.Rect((0, 0), RECT_SIZE)
     rect_right = pygame.Rect((WIN_WIDTH // 2, 0), RECT_SIZE)

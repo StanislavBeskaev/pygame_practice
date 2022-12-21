@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 
-from loguru import logger
 import pygame as pg
-
+from loguru import logger
 
 FPS = 60
 SPEED = 5
@@ -41,12 +40,7 @@ class Bullet:
         return False
 
     def _draw(self, surface: pg.Surface) -> None:
-        pg.draw.circle(
-            surface=surface,
-            color=self._color,
-            center=(self._x, self._y),
-            radius=self.CIRCLE_RADIUS
-        )
+        pg.draw.circle(surface=surface, color=self._color, center=(self._x, self._y), radius=self.CIRCLE_RADIUS)
 
 
 class Game:
@@ -95,8 +89,8 @@ class Game:
                 self._target.x - 0.5 * self.EXPLOSION_SIZE,
                 self._target.y - 0.5 * self.EXPLOSION_SIZE,
                 self.EXPLOSION_SIZE,
-                self.EXPLOSION_SIZE
-            )
+                self.EXPLOSION_SIZE,
+            ),
         )
 
 

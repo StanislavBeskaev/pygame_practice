@@ -1,5 +1,6 @@
-import pygame as pg
 import sys
+
+import pygame as pg
 
 FPS = 60
 WHITE = (255, 255, 255)

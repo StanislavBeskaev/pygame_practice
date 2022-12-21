@@ -1,8 +1,7 @@
 import os
 
-from loguru import logger
 import pygame
-
+from loguru import logger
 
 FPS = os.environ.get("FPS", 30)
 SPEED = 5
@@ -118,14 +117,14 @@ def main():
         pygame.K_DOWN: player.start_move_down,
         pygame.K_UP: player.start_move_up,
         pygame.K_LEFT: player.start_move_left,
-        pygame.K_RIGHT: player.start_move_right
+        pygame.K_RIGHT: player.start_move_right,
     }
 
     player_stop_move_actions = {
         pygame.K_DOWN: player.stop_move_down,
         pygame.K_UP: player.stop_move_up,
         pygame.K_LEFT: player.stop_move_left,
-        pygame.K_RIGHT: player.stop_move_right
+        pygame.K_RIGHT: player.stop_move_right,
     }
 
     while True:
