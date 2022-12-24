@@ -13,6 +13,8 @@ FPS = 60
 WIDTH = 1024
 HEIGHT = 768
 
+last_mouse_pressed_position: PGPoint
+
 
 class MovableMouseRect:
     """Передвигаемый мышкой прямоугольник"""
@@ -35,8 +37,8 @@ class MovableMouseRect:
             self._stop_moving()
 
     def _need_start_moving(self) -> bool:
-        # TODO не учитывается ситуация, что мышка была нажата вне прямоугольника и потом очутилась внутри
-        return not self._moving and self._is_mouse_inside() and self._is_mouse_left_pressed()
+        # TODO если прямоугольников несколько, то будут двигаться все
+        return not self._moving and self._is_mouse_left_pressed() and self._is_mouse_pressed_inside()
 
     def _start_moving(self) -> None:
         self._moving = True
@@ -58,10 +60,10 @@ class MovableMouseRect:
         self._moving = False
         self._previous_mouse_position = None
 
-    def _is_mouse_inside(self) -> bool:
-        """Внутри ли прямоугольника мышь"""
-        mouse_position = pg.mouse.get_pos()
-        return self.rect.collidepoint(mouse_position)
+    def _is_mouse_pressed_inside(self) -> bool:
+        """Была ли нажата левая кнопка мыши внутри прямоугольника"""
+        global last_mouse_pressed_position
+        return self.rect.collidepoint(last_mouse_pressed_position)
 
     @staticmethod
     def _is_mouse_left_pressed() -> bool:
@@ -74,6 +76,8 @@ def get_mouse_position() -> Point:
 
 
 def main():
+    global last_mouse_pressed_position
+
     sc = pg.display.set_mode((WIDTH, HEIGHT))
     sc.fill(colors.WHITE)
 
@@ -105,6 +109,9 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
+
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+                last_mouse_pressed_position = pg.mouse.get_pos()
 
         sc.fill(colors.WHITE)
 
