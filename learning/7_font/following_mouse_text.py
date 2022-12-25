@@ -1,10 +1,9 @@
 import pygame as pg
 from pygame.time import Clock
 
-from projects.common.psysics.vector import Vector
 from projects.common.psysics.point import Point
 from projects.common.psysics.speed import Speed
-
+from projects.common.psysics.vector import Vector
 
 Color = tuple[int, int, int]
 PGPoint = tuple[int, int]

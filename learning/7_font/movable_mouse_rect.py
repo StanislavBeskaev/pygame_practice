@@ -14,6 +14,7 @@ WIDTH = 1024
 HEIGHT = 768
 
 last_mouse_pressed_position: PGPoint
+movable_rects: list["MovableMouseRect"]
 
 
 class MovableMouseRect:
@@ -37,8 +38,12 @@ class MovableMouseRect:
             self._stop_moving()
 
     def _need_start_moving(self) -> bool:
-        # TODO если прямоугольников несколько, то будут двигаться все
-        return not self.moving and self._is_mouse_left_pressed() and self._is_mouse_pressed_inside()
+        return (
+            not self.moving
+            and self._is_mouse_left_pressed()
+            and self._is_mouse_pressed_inside()
+            and not is_any_movable_rect_moving()
+        )
 
     def _start_moving(self) -> None:
         self.moving = True
@@ -75,18 +80,21 @@ def get_mouse_position() -> Point:
     return Point.build_from_tuple(pg.mouse.get_pos())
 
 
-def main():
-    global last_mouse_pressed_position
-
-    sc = pg.display.set_mode((WIDTH, HEIGHT))
-    sc.fill(colors.WHITE)
-
+def init_movable_rects() -> None:
+    global movable_rects
     rect_width = 200
     rect_height = 150
     rect_count = 15
 
     available_colors = (
-        colors.GREEN, colors.LIGHT_GREEN, colors.BLACK, colors.YELLOW, colors.RED, colors.PINK, colors.BLUE, colors.LIGHT_BLUE
+        colors.GREEN,
+        colors.LIGHT_GREEN,
+        colors.BLACK,
+        colors.YELLOW,
+        colors.RED,
+        colors.PINK,
+        colors.BLUE,
+        colors.LIGHT_BLUE,
     )
 
     movable_rects = [
@@ -95,10 +103,25 @@ def main():
             width=rect_width,
             height=rect_height,
             x=random.randint(0, WIDTH - rect_width),
-            y=random.randint(0, HEIGHT - rect_height)
+            y=random.randint(0, HEIGHT - rect_height),
         )
         for _ in range(rect_count)
     ]
+
+
+def is_any_movable_rect_moving() -> bool:
+    global movable_rects
+    return any([rect.moving for rect in movable_rects])
+
+
+def main():
+    global movable_rects
+    global last_mouse_pressed_position
+
+    sc = pg.display.set_mode((WIDTH, HEIGHT))
+    sc.fill(colors.WHITE)
+
+    init_movable_rects()
     for movable_rect in movable_rects:
         sc.blit(movable_rect.surface, movable_rect.rect)
 
@@ -115,7 +138,7 @@ def main():
 
         sc.fill(colors.WHITE)
 
-        for movable_rect in movable_rects:
+        for movable_rect in movable_rects[::-1]:
             movable_rect.update()
 
         movable_rects = sorted(movable_rects, key=lambda rect: rect.moving)
