@@ -9,17 +9,21 @@ from projects.common.psysics.vector import Vector
 
 Color = tuple[int, int, int]
 PGPoint = tuple[int, int]
-FPS = 60
+FPS = 35
 WIDTH = 1024
 HEIGHT = 768
 
 last_mouse_pressed_position: PGPoint
 movable_rects: list["MovableMouseRect"] = []
-RECT_COUNT = 20
+RECT_COUNT = 60
 RECT_MIN_WIDTH = 60
 RECT_MAX_WIDTH = 200
 RECT_MIN_HEIGHT = 40
 RECT_MAX_HEIGHT = 150
+PASSIVE_BORDER_COLOR = colors.GRAY
+ACTIVE_BORDER_COLOR = colors.ORANGE
+PASSIVE_BORDER_WIDTH = 1
+ACTIVE_BORDER_WIDTH = 3
 
 
 class MovableMouseRect:
@@ -49,8 +53,9 @@ class MovableMouseRect:
             self._stop_moving()
 
         self._calculate_intersection_count()
-        self.surface.fill(colors.GRAY)
-        self.surface.fill(self._color, self.surface.get_rect().inflate(-2, -2))
+        self.surface.fill(ACTIVE_BORDER_COLOR if self.moving else PASSIVE_BORDER_COLOR)
+        border_width = ACTIVE_BORDER_WIDTH if self.moving else PASSIVE_BORDER_WIDTH
+        self.surface.fill(self._color, self.surface.get_rect().inflate(-2 * border_width, -2 * border_width))
         self._display_intersection_count()
 
     def _need_start_moving(self) -> bool:
