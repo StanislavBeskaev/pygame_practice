@@ -14,7 +14,12 @@ WIDTH = 1024
 HEIGHT = 768
 
 last_mouse_pressed_position: PGPoint
-movable_rects: list["MovableMouseRect"]
+movable_rects: list["MovableMouseRect"] = []
+RECT_COUNT = 20
+RECT_MIN_WIDTH = 60
+RECT_MAX_WIDTH = 200
+RECT_MIN_HEIGHT = 40
+RECT_MAX_HEIGHT = 150
 
 
 class MovableMouseRect:
@@ -44,7 +49,8 @@ class MovableMouseRect:
             self._stop_moving()
 
         self._calculate_intersection_count()
-        self.surface.fill(self._color)
+        self.surface.fill(colors.GRAY)
+        self.surface.fill(self._color, self.surface.get_rect().inflate(-2, -2))
         self._display_intersection_count()
 
     def _need_start_moving(self) -> bool:
@@ -104,11 +110,8 @@ def get_mouse_position() -> Point:
     return Point.build_from_tuple(pg.mouse.get_pos())
 
 
-def init_movable_rects() -> None:
+def fill_movable_rects() -> None:
     global movable_rects
-    rect_width = 200
-    rect_height = 150
-    rect_count = 15
 
     available_colors = (
         colors.GREEN,
@@ -120,16 +123,19 @@ def init_movable_rects() -> None:
         colors.LIGHT_BLUE,
     )
 
-    movable_rects = [
-        MovableMouseRect(
-            color=random.choice(available_colors),
-            width=rect_width,
-            height=rect_height,
-            x=random.randint(0, WIDTH - rect_width),
-            y=random.randint(0, HEIGHT - rect_height),
+    for _ in range(RECT_COUNT):
+        rect_width = random.randint(RECT_MIN_WIDTH, RECT_MAX_WIDTH)
+        rect_height = random.randint(RECT_MIN_HEIGHT, RECT_MAX_HEIGHT)
+
+        movable_rects.append(
+            MovableMouseRect(
+                color=random.choice(available_colors),
+                width=rect_width,
+                height=rect_height,
+                x=random.randint(0, WIDTH - rect_width),
+                y=random.randint(0, HEIGHT - rect_height),
+            )
         )
-        for _ in range(rect_count)
-    ]
 
 
 def is_any_movable_rect_moving() -> bool:
@@ -145,9 +151,7 @@ def main():
     sc = pg.display.set_mode((WIDTH, HEIGHT))
     sc.fill(colors.WHITE)
 
-    init_movable_rects()
-    for movable_rect in movable_rects:
-        sc.blit(movable_rect.surface, movable_rect.rect)
+    fill_movable_rects()
 
     pg.display.update()
     clock = Clock()
@@ -157,11 +161,12 @@ def main():
             if event.type == pg.QUIT:
                 return
 
-            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == pg.BUTTON_LEFT:
                 last_mouse_pressed_position = pg.mouse.get_pos()
 
         sc.fill(colors.WHITE)
 
+        # В обратном порядке, что бы сначала двигались прямоугольники на переднем фоне
         for movable_rect in movable_rects[::-1]:
             movable_rect.update()
 
