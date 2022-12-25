@@ -25,7 +25,7 @@ class MovableMouseRect:
         self.rect = self.surface.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self._moving = False
+        self.moving = False
         self._previous_mouse_position = None
 
     def update(self):
@@ -38,14 +38,14 @@ class MovableMouseRect:
 
     def _need_start_moving(self) -> bool:
         # TODO если прямоугольников несколько, то будут двигаться все
-        return not self._moving and self._is_mouse_left_pressed() and self._is_mouse_pressed_inside()
+        return not self.moving and self._is_mouse_left_pressed() and self._is_mouse_pressed_inside()
 
     def _start_moving(self) -> None:
-        self._moving = True
+        self.moving = True
         self._previous_mouse_position = Point.build_from_tuple(pg.mouse.get_pos())
 
     def _in_move(self) -> bool:
-        return self._moving and self._is_mouse_left_pressed()
+        return self.moving and self._is_mouse_left_pressed()
 
     def _keep_moving(self) -> None:
         new_mouse_position = Point.build_from_tuple(pg.mouse.get_pos())
@@ -54,10 +54,10 @@ class MovableMouseRect:
         self._previous_mouse_position = new_mouse_position
 
     def _need_stop_moving(self) -> bool:
-        return self._moving and not self._is_mouse_left_pressed()
+        return self.moving and not self._is_mouse_left_pressed()
 
     def _stop_moving(self) -> None:
-        self._moving = False
+        self.moving = False
         self._previous_mouse_position = None
 
     def _is_mouse_pressed_inside(self) -> bool:
@@ -117,6 +117,10 @@ def main():
 
         for movable_rect in movable_rects:
             movable_rect.update()
+
+        movable_rects = sorted(movable_rects, key=lambda rect: rect.moving)
+
+        for movable_rect in movable_rects:
             sc.blit(movable_rect.surface, movable_rect.rect)
 
         pg.display.update()
