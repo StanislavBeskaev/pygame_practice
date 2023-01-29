@@ -61,7 +61,7 @@ class MovableMouseRect:
     def _need_start_moving(self) -> bool:
         return (
             not self.moving
-            and self._is_mouse_left_pressed()
+            and _is_mouse_left_pressed()
             and self._is_mouse_pressed_inside()
             and not is_any_movable_rect_moving()
         )
@@ -71,7 +71,7 @@ class MovableMouseRect:
         self._previous_mouse_position = Point.build_from_tuple(pg.mouse.get_pos())
 
     def _in_move(self) -> bool:
-        return self.moving and self._is_mouse_left_pressed()
+        return self.moving and _is_mouse_left_pressed()
 
     def _keep_moving(self) -> None:
         new_mouse_position = Point.build_from_tuple(pg.mouse.get_pos())
@@ -80,7 +80,7 @@ class MovableMouseRect:
         self._previous_mouse_position = new_mouse_position
 
     def _need_stop_moving(self) -> bool:
-        return self.moving and not self._is_mouse_left_pressed()
+        return self.moving and not _is_mouse_left_pressed()
 
     def _stop_moving(self) -> None:
         self.moving = False
@@ -90,11 +90,6 @@ class MovableMouseRect:
         """Была ли нажата левая кнопка мыши внутри прямоугольника"""
         global last_mouse_pressed_position
         return self.rect.collidepoint(last_mouse_pressed_position)
-
-    @staticmethod
-    def _is_mouse_left_pressed() -> bool:
-        """Нажата ли левая кнопка мыши"""
-        return pg.mouse.get_pressed()[0]
 
     def _calculate_intersection_count(self) -> None:
         intersected_rects = [
@@ -117,6 +112,8 @@ def get_mouse_position() -> Point:
 
 def fill_movable_rects() -> None:
     global movable_rects
+
+    movable_rects = []
 
     available_colors = (
         colors.GREEN,
@@ -169,6 +166,9 @@ def main():
             if event.type == pg.MOUSEBUTTONDOWN and event.button == pg.BUTTON_LEFT:
                 last_mouse_pressed_position = pg.mouse.get_pos()
 
+            if event.type == pg.KEYUP and event.key == pg.K_r and not _is_mouse_left_pressed():
+                fill_movable_rects()
+
         sc.fill(colors.WHITE)
 
         # В обратном порядке, что бы сначала двигались прямоугольники на переднем фоне
@@ -182,6 +182,11 @@ def main():
 
         pg.display.update()
         clock.tick(FPS)
+
+
+def _is_mouse_left_pressed() -> bool:
+    """Нажата ли левая кнопка мыши"""
+    return pg.mouse.get_pressed()[0]
 
 
 if __name__ == '__main__':
